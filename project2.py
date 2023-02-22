@@ -85,7 +85,7 @@ def write_to_file(input_code, output_code, print_count):
         f.write(f"The keyword 'print' was used {print_count} times.")
 
 if __name__ == "__main__":
-    codef = open("test.py", "r")
+    codef = open("testExamples.py", "r")
     code = codef.readlines()
     fixed_code, print_count = process_code(code)
     write_to_file("".join(code), fixed_code, print_count)
