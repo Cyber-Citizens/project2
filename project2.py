@@ -1,5 +1,6 @@
 import re
 
+
 def check_indentation(code):
     indentation_level = 0
     fixed_code = []
@@ -34,6 +35,7 @@ def check_indentation(code):
                 indentation_level = 0
     return "".join(fixed_code)
 
+
 def check_function_header(code):
     fixed_code = []
     for line in range(len(code)):
@@ -47,6 +49,7 @@ def check_function_header(code):
         else:
             fixed_code.append(code[line])
     return "".join(fixed_code)
+
 
 def count_print_keyword(code):
     # Remove comments and strings to avoid counting `print()` within them
@@ -63,11 +66,13 @@ def count_print_keyword(code):
 
     return count
 
+
 def process_code(code):
     fixed_code = check_indentation(code)
     fixed_code = check_function_header(fixed_code)
     print_count = count_print_keyword(fixed_code)
     return fixed_code, print_count
+
 
 def write_to_file(input_code, output_code, print_count):
     with open("output.txt", "w") as f:
@@ -79,6 +84,7 @@ def write_to_file(input_code, output_code, print_count):
         f.write(output_code)
         f.write("\n\n")
         f.write(f"The keyword 'print' was used {print_count} times.")
+
 
 if __name__ == "__main__":
     codef = open("testExamples.py", "r")
