@@ -13,7 +13,8 @@ def check_indentation(code):
             fixed_code.append(fixed_line)
             indentation_level += 1
         elif stripped_line.endswith(":") or stripped_line.startswith("if") \
-             or stripped_line.startswith("else") or stripped_line.startswith("elif"):
+            or stripped_line.startswith("else") or \
+                stripped_line.startswith("elif"):
             fixed_line = "\t" * indentation_level + stripped_line + "\n"
             fixed_code.append(fixed_line)
             indentation_level += 1
