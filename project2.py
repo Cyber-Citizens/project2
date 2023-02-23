@@ -52,26 +52,49 @@ def check_function_header(code):
     return "".join(fixed_code)
 
 
-def count_print_keyword(code):
-    # Remove comments and strings to avoid counting `print()` within them
-    code = re.sub(r'(\".*?\"|\'.*?\')|(#.*)', '', code, flags=re.DOTALL)
+# def count_print_keyword(code):
+#     # Remove comments and strings to avoid counting `print()` within them
+#     code = re.sub(r'(\".*?\"|\'.*?\')|(#.*)', '', code, flags=re.DOTALL)
+#
+#     # Split the code into lines
+#     lines = code.split('\n')
+#
+#     # Count the number of times `print()` is called
+#     count = 0
+#     for line in lines:
+#         if 'print(' in line and not 'print(' in line.split('print(')[-1]:
+#             count += 1
+#
+#     return count
 
-    # Split the code into lines
-    lines = code.split('\n')
 
-    # Count the number of times `print()` is called
+def count_print_statements(code):
     count = 0
-    for line in lines:
-        if 'print(' in line and not 'print(' in line.split('print(')[-1]:
-            count += 1
-
+    in_string = False
+    in_comment = False
+    for line in code.splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        if line.startswith('#'):
+            continue
+        for i in range(len(line)):
+            if line[i:i+3] == '"""' or line[i:i+3] == "'''":
+                in_string = not in_string
+            if not in_string and line[i:i+1] == '#':
+                in_comment = True
+                break
+            if not in_string and not in_comment and line[i:].startswith('print('):
+                count += 1
+                break
+        in_comment = False
     return count
 
 
 def process_code(code):
     fixed_code = check_indentation(code)
     fixed_code = check_function_header(fixed_code)
-    print_count = count_print_keyword(fixed_code)
+    print_count = count_print_statements(fixed_code)
     return fixed_code, print_count
 
 

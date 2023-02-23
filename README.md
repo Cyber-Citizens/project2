@@ -1,5 +1,6 @@
 # project2 in Programming Languages
 
+To run, execute this command:
 ````
 python3 project2.py
 ````
