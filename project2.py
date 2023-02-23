@@ -88,8 +88,8 @@ def write_to_file(input_code, output_code, print_count):
 
 
 if __name__ == "__main__":
-    codef = open("testExamples.py", "r")
-    code = codef.readlines()
+    with open("testExamples.py", "r", encoding="utf-8") as codef:
+        code = codef.readlines()
     fixed_code, print_count = process_code(code)
     write_to_file("".join(code), fixed_code, print_count)
     print("Processing complete. Check 'output.txt' for the results.")
