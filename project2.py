@@ -148,7 +148,7 @@ def write_to_file(input_code, output_code, print_count):
 
 
 if __name__ == "__main__":
-    codef = open("testExamples.py", "r")
+    codef = open("testExamples.py", "r", encoding='utf-8')
     code = codef.readlines()
     fixed_code, print_count = process_code(code)
     write_to_file("".join(code), fixed_code, print_count)
