@@ -29,14 +29,14 @@ def print_funny(grade:
     if grade >= 90:  
         print("This is fun bc I got an A") 
 
-#3. Count how many time the keyword “print” is used as keywords in the input program. 
+#3. Count how many time the keyword "print" is used as keywords in the input program. 
 
 def welcome_print_easy(name):
     print(f"Hello: {name}! Welcome to CS3210.")
     print(f"CS3210 is fun.")
     print(f"Hello: CS3210 is very easy.")
-    #the keyword “print” is used as keyword for 3 times
+    #the keyword "print" is used as keyword for 3 times
 
 def welcome_print_hard(name):
     print(f"Print: {name}! Welcome to CS3210. finished Print") 
-    #the keyword “print” is used as keyword for only 1 time.
+    #the keyword "print" is used as keyword for only 1 time.
