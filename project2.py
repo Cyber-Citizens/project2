@@ -1,6 +1,49 @@
 import re
 
 
+def check_function_header(code):
+    fixed_code = []
+    for line in range(len(code)):
+        code[line] = code[line].strip()
+        if code[line].startswith("def"):
+            match = re.search("def (\w+)\((.*)\):", code[line])
+            # This match is if the function header is correctly formatted
+            match2 = re.search("def(\w+)\((.*)\):", code[line])
+            # This match is if the function header does not have a space between
+            # the def and function name
+            match3 = re.search("def (\w+)\((.*)\:", code[line])
+            # This match is if the function header is missing the closing parentheses
+            match4 = re.search("def (\w+)\((.*)\)", code[line])
+            # This match is if the function header is missing the final colon
+            if match:
+                function_name = match.group(1)
+                arguments = match.group(2)
+                fixed_line = f"def {function_name}({arguments}):"
+                fixed_code.append(fixed_line)
+            elif match2:
+                function_name = match2.group(1)
+                arguments = match2.group(2)
+                fixed_line = f"def {function_name}({arguments}):"
+                fixed_code.append(fixed_line)
+            elif match3:
+                function_name = match3.group(1)
+                arguments = match3.group(2)
+                fixed_line = f"def {function_name}({arguments}):"
+                fixed_code.append(fixed_line)
+            elif match4:
+                function_name = match4.group(1)
+                arguments = match4.group(2)
+                fixed_line = f"def {function_name}({arguments}):"
+                fixed_code.append(fixed_line)
+            # Same body but different conditional since we have to
+            # account for all the different wrong header cases
+        else:
+            fixed_code.append(code[line])
+            # puts it into the form of a list
+    return fixed_code
+    # Returns a list so that check_indentation() can properly run
+
+
 def check_indentation(code):
     indentation_level = 0
     fixed_code = []
@@ -9,47 +52,41 @@ def check_indentation(code):
         stripped_line = code[line].strip()
         if stripped_line.startswith("def"):
             in_definition = True
-            fixed_line = "\t" * indentation_level + stripped_line + "\n"
+            # boolean that tells us we are in a definition
+            fixed_line = stripped_line + "\n"
             fixed_code.append(fixed_line)
             indentation_level += 1
+            # Increase indentation level since everything inside
+            # the definition needs to be indented at least once
         elif stripped_line.endswith(":") or stripped_line.startswith("if") \
             or stripped_line.startswith("else") or \
                 stripped_line.startswith("elif"):
+            # if the line ends with : and the first if statement
+            # wasn't reached then it has to be one of the other control structure
+            # so we need to add it in with and indentation
             fixed_line = "\t" * indentation_level + stripped_line + "\n"
             fixed_code.append(fixed_line)
             indentation_level += 1
-        elif stripped_line.startswith("return"):
-            indentation_level = 1
-            fixed_line = "\t" * indentation_level + stripped_line + "\n"
-            fixed_code.append(fixed_line)
-            in_definition = False
+            # increment since the following line for a control structure
+            # needs to be indented
         elif stripped_line == "":
             indentation_level = 0
             fixed_line = "\n"
             fixed_code.append(fixed_line)
+            # blank line indicates space between defs since we were told defs
+            # won't have blank lines within them we can safely assume that we
+            # are outside the function
         else:
             fixed_line = "\t" * indentation_level + stripped_line + "\n"
             fixed_code.append(fixed_line)
             if in_definition:
                 indentation_level = 1
+                # inside the definition this has to be at least 1
             else:
                 indentation_level = 0
+                # Outside the definition we reset the indentation level
     return "".join(fixed_code)
-
-
-def check_function_header(code):
-    fixed_code = []
-    for line in range(len(code)):
-        if code[line].startswith("def"):
-            match = re.search("def (\w+)\((.*)\):", code[line])
-            if match:
-                function_name = match.group(1)
-                arguments = match.group(2)
-                fixed_line = f"def {function_name}({arguments}):"
-                fixed_code.append(fixed_line)
-        else:
-            fixed_code.append(code[line])
-    return "".join(fixed_code)
+    # This returns a string so that count_print_statements() can properly run
 
 
 # def count_print_keyword(code):
@@ -92,8 +129,8 @@ def count_print_statements(code):
 
 
 def process_code(code):
-    fixed_code = check_indentation(code)
-    fixed_code = check_function_header(fixed_code)
+    fixed_code = check_function_header(code)
+    fixed_code = check_indentation(fixed_code)
     print_count = count_print_statements(fixed_code)
     return fixed_code, print_count
 
