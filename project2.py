@@ -50,7 +50,7 @@ def check_indentation(code):
     in_definition = False
     for line in range(len(code)):
         stripped_line = code[line].strip()
-        if stripped_line.startswith("def"):
+        if stripped_line.startswith("def "):
             in_definition = True
             # boolean that tells us we are in a definition
             fixed_line = stripped_line + "\n"
