@@ -98,19 +98,25 @@ def count_print_statements(code):
     for line in code.splitlines():
         line = line.strip()
         if not line:
+            # skip empty lines
             continue
         if line.startswith('#'):
+            # skip comment lines
             continue
         for i in range(len(line)):
             if line[i:i+3] == '"""' or line[i:i+3] == "'''":
+                # check for docstrings
                 in_string = not in_string
+                # toggle flag for in_string
             if not in_string and line[i:i+1] == '#':
+                # check for comment
                 in_comment = True
                 break
-            if not in_string and not in_comment and line[i:].startswith('print('):
+            if not in_string and not in_comment and line[i:].startswith('print('):  # check for "print(" keyword
                 count += 1
                 break
         in_comment = False
+        # reset flag for in_comment for the next line
     return count
 
 
