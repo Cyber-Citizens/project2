@@ -3,17 +3,18 @@ import re
 
 def check_function_header(code):
     fixed_code = []
-    for line in range(len(code)):
-        code[line] = code[line].strip()
+    codeCopy = code.copy()
+    for line in range(len(codeCopy)):
+        codeCopy[line] = codeCopy[line].strip()
         if code[line].startswith("def"):
-            match = re.search("def (\w+)\((.*)\):", code[line])
+            match = re.search("def (\w+)\((.*)\):", codeCopy[line])
             # This match is if the function header is correctly formatted
-            match2 = re.search("def(\w+)\((.*)\):", code[line])
+            match2 = re.search("def(\w+)\((.*)\):", codeCopy[line])
             # This match is if the function header does not have a space between
             # the def and function name
-            match3 = re.search("def (\w+)\((.*)\:", code[line])
+            match3 = re.search("def (\w+)\((.*)\:", codeCopy[line])
             # This match is if the function header is missing the closing parentheses
-            match4 = re.search("def (\w+)\((.*)\)", code[line])
+            match4 = re.search("def (\w+)\((.*)\)", codeCopy[line])
             # This match is if the function header is missing the final colon
             if match:
                 function_name = match.group(1)
@@ -48,8 +49,9 @@ def check_indentation(code):
     indentation_level = 0
     fixed_code = []
     in_definition = False
-    for line in range(len(code)):
-        stripped_line = code[line].strip()
+    codeCopy = code.copy()
+    for line in range(len(codeCopy)):
+        stripped_line = codeCopy[line].strip()
         if stripped_line.startswith("def "):
             in_definition = True
             # boolean that tells us we are in a definition
@@ -89,22 +91,6 @@ def check_indentation(code):
     # This returns a string so that count_print_statements() can properly run
 
 
-# def count_print_keyword(code):
-#     # Remove comments and strings to avoid counting `print()` within them
-#     code = re.sub(r'(\".*?\"|\'.*?\')|(#.*)', '', code, flags=re.DOTALL)
-#
-#     # Split the code into lines
-#     lines = code.split('\n')
-#
-#     # Count the number of times `print()` is called
-#     count = 0
-#     for line in lines:
-#         if 'print(' in line and not 'print(' in line.split('print(')[-1]:
-#             count += 1
-#
-#     return count
-
-
 def count_print_statements(code):
     count = 0
     in_string = False
@@ -138,7 +124,7 @@ def process_code(code):
 def write_to_file(input_code, output_code, print_count):
     with open("output.txt", "w") as f:
         f.write("Original code:\n")
-        f.write(input_code)
+        f.writelines(input_code)
         f.write("\n\n")
         f.write("-----------------------------------------------------"
                 "-----------------------\nUpdated code:\n\n")
@@ -151,5 +137,5 @@ if __name__ == "__main__":
     codef = open("testExamples.py", "r", encoding='utf-8')
     code = codef.readlines()
     fixed_code, print_count = process_code(code)
-    write_to_file("".join(code), fixed_code, print_count)
+    write_to_file(code, fixed_code, print_count)
     print("Processing complete. Check 'output.txt' for the results.")
