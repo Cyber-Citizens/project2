@@ -20,16 +20,10 @@ def check_function_header(code):
     for line in range(len(code)):
         codeStripped = code[line].strip()
         if code[line].startswith("def"):
-            match = re.search("def (\w+)\((.*)\):", codeStripped)
-            # This match is if the function header is correctly formatted
-            match2 = re.search("def(\w+)\((.*)\):", codeStripped)
-            # This match is if the function header does not have a
-            # space between the def and function name
-            match3 = re.search("def (\w+)\((.*)\:", codeStripped)
-            # This match is if the function header is missing the
-            # closing parentheses
-            match4 = re.search("def (\w+)\((.*)\)", codeStripped)
-            # This match is if the function header is missing the final colon
+            match = re.search(r"def (\w+)\((.*)\):", codeStripped)
+            match2 = re.search(r"def(\w+)\((.*)\):", codeStripped)
+            match3 = re.search(r"def (\w+)\((.*)\:", codeStripped)
+            match4 = re.search(r"def (\w+)\((.*)\)", codeStripped)
             if match:
                 function_name = match.group(1)
                 arguments = match.group(2)
