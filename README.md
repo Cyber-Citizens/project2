@@ -16,3 +16,5 @@ Linux:
 ````
 mv test.py testExamples.py
 ````
+
+If it still doesn't work, skill issue lol
